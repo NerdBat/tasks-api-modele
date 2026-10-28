@@ -88,5 +88,5 @@ black --check .                         # formatage du code
 
 ## Évaluation
 
-Votre note finale = **50 % dossier de TP** + **50 % QCM**.
+Votre note finale = **10/20 pour le dossier de TP** (complet et correct, dépôt GitHub public + tableur du formateur) + **10/20 pour le QCM**.
 Le modèle du dossier est dans `docs/DOSSIER.md` : gardez vos captures d'écran **au fil des TP**.
