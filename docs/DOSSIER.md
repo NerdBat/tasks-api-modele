@@ -4,8 +4,8 @@
 
 | Élément | Poids |
 |---|---|
-| Dossier de TP (ce document) | **50 %** |
-| QCM (20 questions, 30 minutes, jeudi après-midi) | **50 %** |
+| Dossier de TP (ce document) | **10 points sur 20** (50 %) : dossier complet et correct = 10/10 |
+| QCM (20 questions, 30 minutes, jeudi 5 novembre, en fin de journée) | **10 points sur 20** (50 %) |
 
 Le dossier rassemble **tous les TP de la semaine**, avec des captures d'écran et vos explications.
 Vous le construisez **au fil des jours** : ne gardez pas tout pour le jeudi soir !
@@ -15,6 +15,7 @@ Vous le construisez **au fil des jours** : ne gardez pas tout pour le jeudi soir
 - **Format :** un seul fichier **PDF**, nommé `NOM_Prenom_GitOps-CICD.pdf`.
   Rédigez-le dans l'outil de votre choix (Word, Google Docs, LibreOffice…) puis exportez en PDF.
 - **Lien :** indiquez en première page l'adresse de votre dépôt GitHub (il doit être **public**).
+- **Dépôt et tableur :** publiez votre projet `tasks-api` sur GitHub (dépôt **public**, avec le code, les workflows et vos modifications), puis remplissez le **tableur fourni par le formateur** : nom, prénom, adresse e-mail, lien du dépôt. Un dépôt absent, privé ou incorrect fait perdre des points au dossier.
 
 ## Structure du dossier
 
