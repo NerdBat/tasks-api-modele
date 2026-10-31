@@ -16,5 +16,9 @@ WORKDIR ???
 
 # TODO 5 : créer un utilisateur non-root et basculer dessus (USER)
 
-# TODO 6 : exposer le port 8000 et lancer l'app avec gunicorn :
-#          gunicorn --bind 0.0.0.0:8000 app.main:app
+# TODO 6 : embarquer la version et lancer l'app
+#          - déclarer ARG APP_VERSION=dev puis ENV APP_VERSION=${APP_VERSION}
+#            (c'est ce qui permet à /version de répondre 0.1.0 dans l'image publiée)
+#          - exposer le port 8000 (EXPOSE)
+#          - lancer l'app avec gunicorn :
+#            gunicorn --bind 0.0.0.0:8000 app.main:app

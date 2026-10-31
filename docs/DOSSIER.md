@@ -10,7 +10,7 @@
 Le dossier rassemble **tous les TP de la semaine**, avec des captures d'écran et vos explications.
 Vous le construisez **au fil des jours** : ne gardez pas tout pour le jeudi soir !
 
-- **À rendre :** le **vendredi 6 novembre à 17 h**, dernier délai · [mode d'envoi à préciser par le formateur]
+- **À rendre :** le **vendredi 6 novembre à 17 h**, dernier délai · envoi du lien de votre dépôt GitHub dans le tableur Excel fourni par le formateur (voir ci-dessous)
 - **Qui rend quoi :** le dossier est **individuel** : vous pouvez travailler à deux pendant les TP, mais chacun rend son propre dossier, avec ses propres captures et ses propres mots.
 - **Format :** un seul fichier **PDF**, nommé `NOM_Prenom_GitOps-CICD.pdf`.
   Rédigez-le dans l'outil de votre choix (Word, Google Docs, LibreOffice…) puis exportez en PDF.

@@ -77,6 +77,9 @@ Aide, étape par étape :
 - actions à utiliser : `docker/setup-buildx-action@v4`, `docker/login-action@v4` (registre `ghcr.io`,
   utilisateur `${{ github.actor }}`, mot de passe `${{ secrets.GITHUB_TOKEN }}`), `docker/metadata-action@v6`, `docker/build-push-action@v7` ;
 - tags voulus : `type=sha,format=short` (ex. `sha-1a2b3c4`) et `type=semver,pattern={{version}}` pour les tags Git ;
+- **version de l'application :** pour que `/version` réponde `0.1.0` dans l'image publiée, passez la version à la construction avec `build-args: APP_VERSION=…` dans `docker/build-push-action`.
+  Calculez-la dans une étape : pour un tag `v0.1.0`, `${GITHUB_REF_NAME#v}` donne `0.1.0` ; pour un push sur `main`, utilisez par exemple `dev`.
+  (Cela suppose que votre Dockerfile déclare `ARG APP_VERSION` et `ENV APP_VERSION`, voir le TODO 6.)
 - **piège :** le nom d'une image GHCR doit être en **minuscules**. Calculez-le dans une étape : `${GITHUB_REPOSITORY_OWNER,,}`.
 
 Poussez sur `main`, puis allez voir votre profil GitHub → **Packages**.
