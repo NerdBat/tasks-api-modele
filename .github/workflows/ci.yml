@@ -1,33 +1,24 @@
-name: CI
-on: push
+name: Secret demo
+on: workflow_dispatch
 
 jobs:
-  lint:
+  secret-demo:
     runs-on: ubuntu-latest
+    env:
+      DEMO_TOKEN: ${{ secrets.DEMO_TOKEN }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v7
-        with:
-          python-version: "3.12"
-      - run: pip install -r requirements-dev.txt
-      - run: flake8 .
-      - run: black --check .
+      - name: Vérifier que le secret existe
+        run: |
+          if [ -z "$DEMO_TOKEN" ]; then
+            echo "Le secret DEMO_TOKEN est vide ou absent"
+            exit 1
+          fi
 
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.11", "3.12", "3.13"]
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v7
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: pip
-      - run: pip install -r requirements-dev.txt
-      - run: pytest --cov=app --cov-fail-under=80 --cov-report=html
-      - uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: couverture-py${{ matrix.python-version }}
-          path: htmlcov/
+      - name: Afficher la longueur du secret
+        run: echo "Longueur du secret : ${#DEMO_TOKEN}"
+
+      - name: Essayer d'afficher la valeur
+        run: echo "Valeur : $DEMO_TOKEN"
+
+      - name: Afficher la variable APP_ENV
+        run: echo "APP_ENV = ${{ vars.APP_ENV }}"
