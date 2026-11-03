@@ -74,20 +74,24 @@ Créez `.github/workflows/docker.yml` avec **deux jobs** :
 Aide, étape par étape :
 - déclencheurs : `push` sur `main`, `push` de tags `v*`, et `workflow_dispatch` ;
 - le job `build` demande la permission `packages: write` ;
-- actions à utiliser : `docker/setup-buildx-action@v4`, `docker/login-action@v4` (registre `ghcr.io`,
+- actions à utiliser : `docker/setup-qemu-action@v4`, `docker/setup-buildx-action@v4`, `docker/login-action@v4` (registre `ghcr.io`,
   utilisateur `${{ github.actor }}`, mot de passe `${{ secrets.GITHUB_TOKEN }}`), `docker/metadata-action@v6`, `docker/build-push-action@v7` ;
 - tags voulus : `type=sha,format=short` (ex. `sha-1a2b3c4`) et `type=semver,pattern={{version}}` pour les tags Git ;
 - **version de l'application :** pour que `/version` réponde `0.1.0` dans l'image publiée, passez la version à la construction avec `build-args: APP_VERSION=…` dans `docker/build-push-action`.
   Calculez-la dans une étape : pour un tag `v0.1.0`, `${GITHUB_REF_NAME#v}` donne `0.1.0` ; pour un push sur `main`, utilisez par exemple `dev`.
   (Cela suppose que votre Dockerfile déclare `ARG APP_VERSION` et `ENV APP_VERSION`, voir le TODO 6.)
 - **piège :** le nom d'une image GHCR doit être en **minuscules**. Calculez-le dans une étape : `${GITHUB_REPOSITORY_OWNER,,}`.
+- **piège (Mac récents) :** si vous êtes sur un Mac Apple Silicon (M1 à M4), votre ordinateur est en **arm64**, alors que les serveurs GitHub sont en **amd64**.
+  Sans précaution, l'image publiée ne fonctionnerait pas chez vous (`no matching manifest for linux/arm64`), ni dans le cluster du jour 4.
+  Placez `docker/setup-qemu-action` **avant** `docker/setup-buildx-action`, et ajoutez `platforms: linux/amd64,linux/arm64` dans `docker/build-push-action`.
+  Cette construction est plus longue (quelques minutes de plus) : c'est normal.
 
 Poussez sur `main`, puis allez voir votre profil GitHub → **Packages**.
 
 > 📸 **TP3-3 :** le run avec `test` puis `build` au vert.
 > 📸 **TP3-4 :** la page du package `tasks-api` avec son tag `sha-…`.
 
-**Questions :** Pourquoi `build` attend-il `test` ? Pourquoi éviter le tag `latest` en production ?
+**Questions :** Pourquoi `build` attend-il `test` ? Pourquoi éviter le tag `latest` en production ? Pourquoi publier une image pour deux architectures ?
 
 ---
 
@@ -109,6 +113,13 @@ git push origin v0.1.0
 docker run --rm -p 8000:8000 ghcr.io/<votre-compte-minuscules>/tasks-api:0.1.0
 ```
 
+5. Vérifiez que l'image est bien publiée pour les deux architectures :
+
+```bash
+docker buildx imagetools inspect ghcr.io/<votre-compte-minuscules>/tasks-api:0.1.0
+```
+
+Vous devez voir `linux/amd64` **et** `linux/arm64` dans la liste. (Les lignes `unknown/unknown` sont normales : ce sont des attestations ajoutées automatiquement.)
 
 > 📸 **TP3-5 :** la liste des tags du package (`0.1.0` et `sha-…`).
 > 📸 **TP3-6 :** `docker run` de l'image **téléchargée depuis GHCR** et `curl /version` qui répond `0.1.0`.
@@ -156,7 +167,7 @@ Si la commande échoue, notez l'erreur : on la réglera demain.
 
 - [ ] Dockerfile complet, image construite et testée
 - [ ] `docker-compose.yml` fonctionnel
-- [ ] Image publiée sur GHCR par le pipeline, package public
+- [ ] Image publiée sur GHCR par le pipeline (amd64 et arm64), package public
 - [ ] Release `v0.1.0` publiée et testée depuis GHCR
 - [ ] Environnement `production` avec approbation
 - [ ] Mes 8 captures et mes réponses sont dans le dossier
