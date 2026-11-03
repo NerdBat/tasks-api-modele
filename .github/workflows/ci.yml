@@ -1,24 +1,25 @@
-name: Secret demo
-on: workflow_dispatch
+name: Docker
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  packages: write        # indispensable pour pousser sur GHCR
 
 jobs:
-  secret-demo:
+  publish:
     runs-on: ubuntu-latest
-    env:
-      DEMO_TOKEN: ${{ secrets.DEMO_TOKEN }}
     steps:
-      - name: Vérifier que le secret existe
-        run: |
-          if [ -z "$DEMO_TOKEN" ]; then
-            echo "Le secret DEMO_TOKEN est vide ou absent"
-            exit 1
-          fi
-
-      - name: Afficher la longueur du secret
-        run: echo "Longueur du secret : ${#DEMO_TOKEN}"
-
-      - name: Essayer d'afficher la valeur
-        run: echo "Valeur : $DEMO_TOKEN"
-
-      - name: Afficher la variable APP_ENV
-        run: echo "APP_ENV = ${{ vars.APP_ENV }}"
+      - uses: actions/checkout@v6
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}   # fourni automatiquement
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
